@@ -10,7 +10,11 @@ app.use('/', createProxyMiddleware({
   changeOrigin: true,
   onProxyRes: function (proxyRes, req, res) {
     proxyRes.headers['Access-Control-Allow-Origin'] = '*';
-  }
+    proxyRes.headers["Access-Control-Allow-Credentials"] = "true";
+  },
+
+        // 修改响应信息中的 cookie 域名
+  cookieDomainRewrite: "localhost" // 可以为 false，表示不修改
 }));
 
 app.listen(port, () => {
