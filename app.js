@@ -5,8 +5,15 @@ const {
 const app = express()
 const port = process.env.PORT || 9000
 
-app.use('/', createProxyMiddleware({
+app.use('/openai', createProxyMiddleware({
   target: 'https://api.openai.com',
+  changeOrigin: true,
+  onProxyRes: function (proxyRes, req, res) {
+    proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+  }
+}));
+app.use('/bing', createProxyMiddleware({
+  target: 'https://www.bing.com',
   changeOrigin: true,
   onProxyRes: function (proxyRes, req, res) {
     proxyRes.headers['Access-Control-Allow-Origin'] = '*';
