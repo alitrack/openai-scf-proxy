@@ -16,6 +16,7 @@ app.use('/', createProxyMiddleware({
 
     // 修改响应信息中的 cookie 域名
     if (proxyRes.headers['set-cookie']) {
+      console.log(`set-cookie at ${req.headers.host}`)
       const cookies = proxyRes.headers['set-cookie'].map(cookie => {
         return cookie.replace(/(Domain=)([^;]+)/, `$1${req.headers.host}`);
       });
