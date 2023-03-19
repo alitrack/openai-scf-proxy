@@ -10,7 +10,6 @@ app.use('/', createProxyMiddleware({
   changeOrigin: true,
   onProxyRes: function (proxyRes, req, res) {
     proxyRes.headers['Access-Control-Allow-Origin'] = '*';
-    proxyRes.headers["Access-Control-Allow-Credentials"] = "true";
 }));
 
 app.listen(port, () => {
