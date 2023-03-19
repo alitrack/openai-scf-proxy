@@ -1,12 +1,9 @@
 const express = require('express')
-const {
-  createProxyMiddleware
-} = require('http-proxy-middleware');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const app = express();
 const port = process.env.PORT || 9000;
 const cors = require('cors');
 app.use(cors());
-
 
 app.use('/', createProxyMiddleware({
   target: process.env.TARGET,
@@ -15,9 +12,14 @@ app.use('/', createProxyMiddleware({
     proxyRes.headers['Access-Control-Allow-Origin'] = '*';
     proxyRes.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization';
     proxyRes.headers['Access-Control-Allow-Methods'] = 'GET,PUT,POST,DELETE,PATCH,OPTIONS';
-    
+
     // 修改响应信息中的 cookie 域名
-    cookieDomainRewrite: "localhost" // 可以为 false，表示不修改
+    if (proxyRes.headers['set-cookie']) {
+      const cookies = proxyRes.headers['set-cookie'].map(cookie => {
+        return cookie.replace(/(Domain=)([^;]+)/, `$1${req.headers.host}`);
+      });
+      proxyRes.headers['set-cookie'] = cookies;
+    }
   }
 }));
 
