@@ -23,7 +23,7 @@ app.use('/', createProxyMiddleware({
       proxyRes.headers['set-cookie'] = cookies;
     }
   },
-  followRedirects: true;
+  followRedirects: true
 }));
 
 app.listen(port, () => {
